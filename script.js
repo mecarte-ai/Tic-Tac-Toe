@@ -5,13 +5,13 @@ let initialState = function () {
     ["", "", ""],
   ];
 };
-let historyState = [];
+let moves = [];
 let currentState, turn;
 let moveIndex = 0;
 
 let resetBoard = function () {
   currentState = initialState();
-  historyState = [];
+  moves = [];
   moveIndex = 0;
   turn = "X";
   hideControlButtons();
@@ -52,9 +52,9 @@ document.addEventListener("click", function (event) {
 
     currentState[row][column] = turn;
 
-    historyState.push(deepCopyState(currentState));
+    moves.push(deepCopyState(currentState));
 
-    moveIndex = historyState.length - 1;
+    moveIndex = moves.length - 1;
 
     updateBoard();
 
@@ -126,16 +126,16 @@ function checkWinner(board, player) {
 function showPreviousMove() {
   if (moveIndex > 0) {
     moveIndex--;
-    currentState = deepCopyState(historyState[moveIndex]);
+    currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
   }
 }
 
 function showNextMove() {
-  if (moveIndex < historyState.length - 1) {
+  if (moveIndex < moves.length - 1) {
     moveIndex++;
-    currentState = deepCopyState(historyState[moveIndex]);
+    currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
   }
@@ -186,7 +186,7 @@ function updateButtonStates() {
   previousButton.disabled = moveIndex === 0;
 
   // Enable or disable the "Next" button based on the moveIndex
-  nextButton.disabled = moveIndex === historyState.length - 1;
+  nextButton.disabled = moveIndex === moves.length - 1;
 }
 
 resetBoard();
