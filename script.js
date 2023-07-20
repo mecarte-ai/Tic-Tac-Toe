@@ -51,20 +51,19 @@ document.addEventListener("click", function (event) {
 
     currentState[row][column] = turn;
 
-    console.log(initialState());
-    console.log(currentState);
-
-    if (checkWinner(currentState, turn)) {
-      alert(turn + " wins!");
-    }
-
     historyState.push(deepCopyState(currentState));
 
     moveIndex = historyState.length - 1;
 
+    if (checkWinner(currentState, turn)) {
+      alert(turn + " wins!");
+      disableSquareButtons(); // Disable buttons when a player wins
+      showControlButtons(); // Show the "Previous," "Next," and "Reset" buttons
+      return; // Stop further processing
+    }
+
     updateBoard();
 
-    console.log(historyState);
     turn = turn === "X" ? "O" : "X";
   }
 });
@@ -129,6 +128,20 @@ function showNextMove() {
     currentState = deepCopyState(historyState[moveIndex]);
     updateBoard();
   }
+}
+
+function disableSquareButtons() {
+  const squareButtons = document.querySelectorAll(".square");
+
+  squareButtons.forEach((button) => {
+    button.disabled = true;
+  });
+}
+
+function showControlButtons() {
+  // Show the buttons by setting the display style to "block"
+  const buttonContainer = document.querySelector(".button-container");
+  buttonContainer.style.display = "block";
 }
 
 resetBoard();
