@@ -7,10 +7,12 @@ let initialState = function () {
 };
 let historyState = [];
 let currentState, turn;
+let moveIndex = 0;
 
 let resetBoard = function () {
   currentState = initialState();
   historyState = [];
+  moveIndex = 0;
   turn = "X";
   updateBoard();
 };
@@ -46,6 +48,10 @@ document.addEventListener("click", function (event) {
     console.log(initialState());
     console.log(currentState);
 
+    if (checkWinner(currentState, turn)) {
+      console.log(turn + " wins!");
+    }
+
     historyState.push(deepCopyState(currentState));
 
     updateBoard();
@@ -57,6 +63,48 @@ document.addEventListener("click", function (event) {
 
 function deepCopyState(state) {
   return JSON.parse(JSON.stringify(state));
+}
+
+function checkWinner(board, player) {
+  // Check rows
+  for (let i = 0; i < 3; i++) {
+    if (
+      board[i][0] === player &&
+      board[i][1] === player &&
+      board[i][2] === player
+    ) {
+      return true;
+    }
+  }
+
+  // Check columns
+  for (let j = 0; j < 3; j++) {
+    if (
+      board[0][j] === player &&
+      board[1][j] === player &&
+      board[2][j] === player
+    ) {
+      return true;
+    }
+  }
+
+  // Check diagonals
+  if (
+    board[0][0] === player &&
+    board[1][1] === player &&
+    board[2][2] === player
+  ) {
+    return true;
+  }
+  if (
+    board[0][2] === player &&
+    board[1][1] === player &&
+    board[2][0] === player
+  ) {
+    return true;
+  }
+
+  return false;
 }
 
 resetBoard();
