@@ -17,6 +17,11 @@ let resetBoard = function () {
   updateBoard();
 };
 
+document
+  .getElementById("previous-button")
+  .addEventListener("click", showPreviousMove);
+document.getElementById("next-button").addEventListener("click", showNextMove);
+
 let updateBoard = function () {
   let board = document.querySelector(".game-board");
   if (!board) return;
@@ -53,6 +58,8 @@ document.addEventListener("click", function (event) {
     }
 
     historyState.push(deepCopyState(currentState));
+
+    moveIndex = historyState.length - 1;
 
     updateBoard();
 
@@ -107,9 +114,20 @@ function checkWinner(board, player) {
   return false;
 }
 
-document
-  .getElementById("previous-button")
-  .addEventListener("click", showPreviousMove);
-document.getElementById("next-button").addEventListener("click", showNextMove);
+function showPreviousMove() {
+  if (moveIndex > 0) {
+    moveIndex--;
+    currentState = deepCopyState(historyState[moveIndex]);
+    updateBoard();
+  }
+}
+
+function showNextMove() {
+  if (moveIndex < historyState.length - 1) {
+    moveIndex++;
+    currentState = deepCopyState(historyState[moveIndex]);
+    updateBoard();
+  }
+}
 
 resetBoard();
