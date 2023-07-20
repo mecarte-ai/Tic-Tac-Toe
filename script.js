@@ -21,6 +21,7 @@ document
   .getElementById("previous-button")
   .addEventListener("click", showPreviousMove);
 document.getElementById("next-button").addEventListener("click", showNextMove);
+document.getElementById("reset-button").addEventListener("click", resetBoard);
 
 let updateBoard = function () {
   let board = document.querySelector(".game-board");
@@ -54,7 +55,7 @@ document.addEventListener("click", function (event) {
     console.log(currentState);
 
     if (checkWinner(currentState, turn)) {
-      console.log(turn + " wins!");
+      alert(turn + " wins!");
     }
 
     historyState.push(deepCopyState(currentState));
