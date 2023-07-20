@@ -14,6 +14,7 @@ let resetBoard = function () {
   historyState = [];
   moveIndex = 0;
   turn = "X";
+  hideControlButtons();
   updateBoard();
 };
 
@@ -55,16 +56,24 @@ document.addEventListener("click", function (event) {
 
     moveIndex = historyState.length - 1;
 
+    updateBoard();
+
     if (checkWinner(currentState, turn)) {
       alert(turn + " wins!");
       disableSquareButtons(); // Disable buttons when a player wins
       showControlButtons(); // Show the "Previous," "Next," and "Reset" buttons
+
+      updateButtonStates();
       return; // Stop further processing
     }
 
-    updateBoard();
-
     turn = turn === "X" ? "O" : "X";
+
+    if (isDraw()) {
+      alert("It's a draw!");
+      disableSquareButtons();
+      showControlButtons();
+    }
   }
 });
 
@@ -119,6 +128,7 @@ function showPreviousMove() {
     moveIndex--;
     currentState = deepCopyState(historyState[moveIndex]);
     updateBoard();
+    updateButtonStates();
   }
 }
 
@@ -127,6 +137,7 @@ function showNextMove() {
     moveIndex++;
     currentState = deepCopyState(historyState[moveIndex]);
     updateBoard();
+    updateButtonStates();
   }
 }
 
@@ -139,9 +150,43 @@ function disableSquareButtons() {
 }
 
 function showControlButtons() {
-  // Show the buttons by setting the display style to "block"
   const buttonContainer = document.querySelector(".button-container");
   buttonContainer.style.display = "block";
+}
+
+function hideControlButtons() {
+  const buttonContainer = document.querySelector(".button-container");
+  buttonContainer.style.display = "none";
+}
+
+function isDraw() {
+  // Check if all squares are filled with X or O
+  for (let i = 0; i < currentState.length; i++) {
+    for (let j = 0; j < currentState[i].length; j++) {
+      if (currentState[i][j] === "") {
+        return false;
+      }
+    }
+  }
+  // If all squares are filled, and no player has won, it's a draw
+  return true;
+}
+
+function showResetButton() {
+  // Show the reset button by setting the display style to "block"
+  const resetButton = document.getElementById("reset-button");
+  resetButton.style.display = "block";
+}
+
+function updateButtonStates() {
+  const previousButton = document.getElementById("previous-button");
+  const nextButton = document.getElementById("next-button");
+
+  // Enable or disable the "Previous" button based on the moveIndex
+  previousButton.disabled = moveIndex === 0;
+
+  // Enable or disable the "Next" button based on the moveIndex
+  nextButton.disabled = moveIndex === historyState.length - 1;
 }
 
 resetBoard();
