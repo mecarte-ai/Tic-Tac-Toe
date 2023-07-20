@@ -107,4 +107,9 @@ function checkWinner(board, player) {
   return false;
 }
 
+document
+  .getElementById("previous-button")
+  .addEventListener("click", showPreviousMove);
+document.getElementById("next-button").addEventListener("click", showNextMove);
+
 resetBoard();
