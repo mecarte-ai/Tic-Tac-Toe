@@ -73,6 +73,7 @@ document.addEventListener("click", function (event) {
       alert("It's a draw!");
       disableSquareButtons();
       showControlButtons();
+      updateButtonStates();
     }
   }
 });
