@@ -37,7 +37,9 @@ let buildBoard = function (state) {
     boardHTML += `<div class="row">`;
 
     for (let j = 0; j < state[i].length; j++) {
-      boardHTML += `<button class="square" data-row='${i}' data-column='${j}'>${state[i][j]}</button>`;
+      boardHTML += `<button class="square" data-row='${i}' data-column='${j}' ${
+        state[i][j] !== "" ? "disabled" : ""
+      }>${state[i][j]}</button>`;
     }
 
     boardHTML += `</div>`;
@@ -55,7 +57,6 @@ document.addEventListener("click", function (event) {
     moves.push(deepCopyState(currentState));
 
     moveIndex = moves.length - 1;
-
     updateBoard();
 
     if (checkWinner(currentState, turn)) {
