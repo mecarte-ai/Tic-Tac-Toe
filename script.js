@@ -131,6 +131,7 @@ function showPreviousMove() {
     currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
+    disableSquareButtons();
   }
 }
 
@@ -140,6 +141,7 @@ function showNextMove() {
     currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
+    disableSquareButtons();
   }
 }
 
