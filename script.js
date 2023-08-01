@@ -10,9 +10,10 @@ let currentState, turn;
 let moveIndex = 0;
 let textStatus = document.querySelector(".status");
 let movesContainer = document.querySelector(".moves-container");
+let container = document.querySelector(".container");
 
 function promptSymbol() {
-  const input = prompt("Please enter 'X' or 'O':");
+  const input = prompt("Who plays first?\nPlease enter 'X' or 'O':");
 
   if (input === null) {
     return promptSymbol();
@@ -28,6 +29,8 @@ function promptSymbol() {
 }
 
 let resetBoard = function () {
+  container.style.visibility = "none";
+  hideControlButtons();
   const selectedSymbol = promptSymbol();
   if (selectedSymbol !== null) {
     console.log("Selected Symbol:", selectedSymbol);
@@ -38,6 +41,7 @@ let resetBoard = function () {
     textStatus.innerHTML = `Player ${turn}'s turn`;
     movesContainer.innerHTML = "";
     movesContainer.style.visibility = "hidden";
+    container.style.visibility = "visible";
     hideControlButtons();
     updateBoard();
   } else {
