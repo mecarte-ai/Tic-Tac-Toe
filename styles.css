@@ -1,12 +1,12 @@
 .game-board {
-  border: solid 1px black;
+  /* border: solid 1px black; */
   width: fit-content;
 }
 
 .square {
   height: 50px;
   width: 50px;
-  border: solid 1px red;
+  /* border: solid 1px red; */
 }
 
 .row{

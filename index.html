@@ -4,15 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="aga-branch/styles.css" />
     <title>Document</title>
   </head>
   <body>
-    <div class="game-board"></div>
+    <div class="container">
+      <div class="game">
+        <div class="status"></div>
+        <div class="game-board"></div>
 
-    <div class="button-container" style="display: none">
-      <button id="previous-button">Previous</button>
-      <button id="next-button">Next</button>
-      <button id="reset-button">Reset</button>
+        <div class="button-container" style="visibility: none">
+          <button id="previous-button">🡄</button>
+          <button id="next-button">🡆</button>
+          <button id="reset-button">⭯</button>
+        </div>
+      </div>
+
+      <div class="moves-container"></div>
     </div>
 
     <script src="script.js"></script>

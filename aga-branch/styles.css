@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: 0;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+button {
+  background-color: white;
+}
+
+.game-board .row:nth-child(1),
+.game-board .row:nth-child(2) {
+  border-bottom: 1px solid black;
+}
+
+.row .square:nth-child(2) {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.square:disabled {
+  color: black;
+}
+
+.winning-square {
+  background-color: red;
+  color: white !important;
+}
+
+.moves-container{
+  display: flex;
+  flex-direction: column;
+  width: 100px;
+}
+
+.game {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}

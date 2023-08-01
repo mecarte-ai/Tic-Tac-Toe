@@ -8,14 +8,45 @@ let initialState = function () {
 let moves = [];
 let currentState, turn;
 let moveIndex = 0;
+let textStatus = document.querySelector(".status");
+let movesContainer = document.querySelector(".moves-container");
+let container = document.querySelector(".container");
+
+function promptSymbol() {
+  const input = prompt("Who plays first?\nPlease enter 'X' or 'O':");
+
+  if (input === null) {
+    return promptSymbol();
+  }
+
+  const symbol = input.trim().toUpperCase();
+  if (symbol === "X" || symbol === "O") {
+    return symbol;
+  } else {
+    alert("Invalid input. Please enter 'X' or 'O'.");
+    return promptSymbol();
+  }
+}
 
 let resetBoard = function () {
-  currentState = initialState();
-  moves = [];
-  moveIndex = 0;
-  turn = "X";
+  container.style.visibility = "none";
   hideControlButtons();
-  updateBoard();
+  const selectedSymbol = promptSymbol();
+  if (selectedSymbol !== null) {
+    console.log("Selected Symbol:", selectedSymbol);
+    currentState = initialState();
+    moves = [];
+    moveIndex = 0;
+    turn = selectedSymbol;
+    textStatus.innerHTML = `Player ${turn}'s turn`;
+    movesContainer.innerHTML = "";
+    movesContainer.style.visibility = "hidden";
+    container.style.visibility = "visible";
+    hideControlButtons();
+    updateBoard();
+  } else {
+    console.log("Prompt canceled.");
+  }
 };
 
 document
@@ -33,11 +64,19 @@ let updateBoard = function () {
 let buildBoard = function (state) {
   let boardHTML = "";
 
+  const winningPattern = getWinningPattern(state);
+  const isWinningMove = winningPattern !== null;
+
   for (let i = 0; i < state.length; i++) {
     boardHTML += `<div class="row">`;
 
     for (let j = 0; j < state[i].length; j++) {
-      boardHTML += `<button class="square" data-row='${i}' data-column='${j}'>${state[i][j]}</button>`;
+      const isSquareWinning =
+        isWinningMove && winningPattern.includes(i * 3 + j);
+      const disabledClass = state[i][j] !== "" ? "disabled" : "";
+      const winningClass = isSquareWinning ? "winning-square" : "";
+
+      boardHTML += `<button class="square ${winningClass}" data-row='${i}' data-column='${j}' ${disabledClass}>${state[i][j]}</button>`;
     }
 
     boardHTML += `</div>`;
@@ -45,10 +84,22 @@ let buildBoard = function (state) {
   return boardHTML;
 };
 
+function addButtonMovescontainer(index) {
+  let movesContainer = document.querySelector(".moves-container");
+  const moveButton = document.createElement("button");
+  moveButton.innerText = `Go to move ${index}`;
+  moveButton.classList.add("move-button");
+  moveButton.setAttribute("data-index", index);
+  movesContainer.appendChild(moveButton);
+}
+
+function goToMove(index) {}
+
 document.addEventListener("click", function (event) {
   if (event.target.matches(".square")) {
     let row = event.target.getAttribute("data-row");
     let column = event.target.getAttribute("data-column");
+    // let movesContainer = document.querySelector(".moves-container");
 
     currentState[row][column] = turn;
 
@@ -56,25 +107,43 @@ document.addEventListener("click", function (event) {
 
     moveIndex = moves.length - 1;
 
+    // const moveButton = `<button>Move ${moveIndex}</button>`;
+    // movesContainer.appendChild(moveButton);
+    addButtonMovescontainer(moves.length);
+
     updateBoard();
 
     if (checkWinner(currentState, turn)) {
-      alert(turn + " wins!");
       disableSquareButtons(); // Disable buttons when a player wins
       showControlButtons(); // Show the "Previous," "Next," and "Reset" buttons
-
+      textStatus.innerHTML = `Player ${turn} wins!`;
       updateButtonStates();
+      movesContainer.style.visibility = "visible";
       return; // Stop further processing
     }
 
     turn = turn === "X" ? "O" : "X";
 
+    textStatus.innerHTML = `Player ${turn}'s turn`;
+
     if (isDraw()) {
-      alert("It's a draw!");
+      textStatus.innerHTML = "It's a draw!";
+      movesContainer.style.visibility = "visible";
       disableSquareButtons();
       showControlButtons();
       updateButtonStates();
     }
+  }
+
+  if (event.target.matches(".move-button")) {
+    let index = event.target.getAttribute("data-index");
+
+    moveIndex = index - 1;
+
+    currentState = deepCopyState(moves[index - 1]);
+    updateBoard();
+    updateButtonStates();
+    disableSquareButtons();
   }
 });
 
@@ -130,6 +199,7 @@ function showPreviousMove() {
     currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
+    disableSquareButtons();
   }
 }
 
@@ -139,6 +209,7 @@ function showNextMove() {
     currentState = deepCopyState(moves[moveIndex]);
     updateBoard();
     updateButtonStates();
+    disableSquareButtons();
   }
 }
 
@@ -152,12 +223,12 @@ function disableSquareButtons() {
 
 function showControlButtons() {
   const buttonContainer = document.querySelector(".button-container");
-  buttonContainer.style.display = "block";
+  buttonContainer.style.visibility = "visible";
 }
 
 function hideControlButtons() {
   const buttonContainer = document.querySelector(".button-container");
-  buttonContainer.style.display = "none";
+  buttonContainer.style.visibility = "hidden";
 }
 
 function isDraw() {
@@ -188,6 +259,49 @@ function updateButtonStates() {
 
   // Enable or disable the "Next" button based on the moveIndex
   nextButton.disabled = moveIndex === moves.length - 1;
+}
+
+function getWinningPattern(board) {
+  // Check rows
+  for (let i = 0; i < 3; i++) {
+    if (
+      board[i][0] !== "" &&
+      board[i][0] === board[i][1] &&
+      board[i][1] === board[i][2]
+    ) {
+      return [i * 3, i * 3 + 1, i * 3 + 2];
+    }
+  }
+
+  // Check columns
+  for (let j = 0; j < 3; j++) {
+    if (
+      board[0][j] !== "" &&
+      board[0][j] === board[1][j] &&
+      board[1][j] === board[2][j]
+    ) {
+      return [j, j + 3, j + 6];
+    }
+  }
+
+  // Check diagonals
+  if (
+    board[0][0] !== "" &&
+    board[0][0] === board[1][1] &&
+    board[1][1] === board[2][2]
+  ) {
+    return [0, 4, 8];
+  }
+  if (
+    board[0][2] !== "" &&
+    board[0][2] === board[1][1] &&
+    board[1][1] === board[2][0]
+  ) {
+    return [2, 4, 6];
+  }
+
+  // If no winner, return null
+  return null;
 }
 
 resetBoard();
