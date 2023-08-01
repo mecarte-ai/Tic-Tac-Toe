@@ -18,7 +18,7 @@ let resetBoard = function () {
   turn = "X";
   textStatus.innerHTML = `Player ${turn}'s turn`;
   movesContainer.innerHTML = "";
-  // movesContainer.style.visibility = "hidden";
+  movesContainer.style.visibility = "hidden";
   hideControlButtons();
   updateBoard();
 };
