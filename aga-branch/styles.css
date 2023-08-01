@@ -30,3 +30,8 @@ button {
 .square:disabled {
   color: black;
 }
+
+.winning-square {
+  background-color: red;
+  color: white !important;
+}

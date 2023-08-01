@@ -33,13 +33,19 @@ let updateBoard = function () {
 let buildBoard = function (state) {
   let boardHTML = "";
 
+  const winningPattern = getWinningPattern(state);
+  const isWinningMove = winningPattern !== null;
+
   for (let i = 0; i < state.length; i++) {
     boardHTML += `<div class="row">`;
 
     for (let j = 0; j < state[i].length; j++) {
-      boardHTML += `<button class="square" data-row='${i}' data-column='${j}' ${
-        state[i][j] !== "" ? "disabled" : ""
-      }>${state[i][j]}</button>`;
+      const isSquareWinning =
+        isWinningMove && winningPattern.includes(i * 3 + j);
+      const disabledClass = state[i][j] !== "" ? "disabled" : "";
+      const winningClass = isSquareWinning ? "winning-square" : "";
+
+      boardHTML += `<button class="square ${winningClass}" data-row='${i}' data-column='${j}' ${disabledClass}>${state[i][j]}</button>`;
     }
 
     boardHTML += `</div>`;
@@ -155,12 +161,12 @@ function disableSquareButtons() {
 
 function showControlButtons() {
   const buttonContainer = document.querySelector(".button-container");
-  buttonContainer.style.display = "block";
+  buttonContainer.style.visibility = "visible";
 }
 
 function hideControlButtons() {
   const buttonContainer = document.querySelector(".button-container");
-  buttonContainer.style.display = "none";
+  buttonContainer.style.visibility = "hidden";
 }
 
 function isDraw() {
@@ -191,6 +197,49 @@ function updateButtonStates() {
 
   // Enable or disable the "Next" button based on the moveIndex
   nextButton.disabled = moveIndex === moves.length - 1;
+}
+
+function getWinningPattern(board) {
+  // Check rows
+  for (let i = 0; i < 3; i++) {
+    if (
+      board[i][0] !== "" &&
+      board[i][0] === board[i][1] &&
+      board[i][1] === board[i][2]
+    ) {
+      return [i * 3, i * 3 + 1, i * 3 + 2];
+    }
+  }
+
+  // Check columns
+  for (let j = 0; j < 3; j++) {
+    if (
+      board[0][j] !== "" &&
+      board[0][j] === board[1][j] &&
+      board[1][j] === board[2][j]
+    ) {
+      return [j, j + 3, j + 6];
+    }
+  }
+
+  // Check diagonals
+  if (
+    board[0][0] !== "" &&
+    board[0][0] === board[1][1] &&
+    board[1][1] === board[2][2]
+  ) {
+    return [0, 4, 8];
+  }
+  if (
+    board[0][2] !== "" &&
+    board[0][2] === board[1][1] &&
+    board[1][1] === board[2][0]
+  ) {
+    return [2, 4, 6];
+  }
+
+  // If no winner, return null
+  return null;
 }
 
 resetBoard();
