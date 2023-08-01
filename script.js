@@ -8,12 +8,17 @@ let initialState = function () {
 let moves = [];
 let currentState, turn;
 let moveIndex = 0;
+let textStatus = document.querySelector(".status");
+let movesContainer = document.querySelector(".moves-container");
 
 let resetBoard = function () {
   currentState = initialState();
   moves = [];
   moveIndex = 0;
   turn = "X";
+  textStatus.innerHTML = `Player ${turn}'s turn`;
+  movesContainer.innerHTML = "";
+  movesContainer.style.visibility = "hidden";
   hideControlButtons();
   updateBoard();
 };
@@ -53,35 +58,66 @@ let buildBoard = function (state) {
   return boardHTML;
 };
 
+function addButtonMovescontainer(index) {
+  let movesContainer = document.querySelector(".moves-container");
+  const moveButton = document.createElement("button");
+  moveButton.innerText = `Go to move ${index}`;
+  moveButton.classList.add("move-button");
+  moveButton.setAttribute("data-index", index);
+  movesContainer.appendChild(moveButton);
+}
+
+function goToMove(index) {}
+
 document.addEventListener("click", function (event) {
   if (event.target.matches(".square")) {
     let row = event.target.getAttribute("data-row");
     let column = event.target.getAttribute("data-column");
+    // let movesContainer = document.querySelector(".moves-container");
 
     currentState[row][column] = turn;
 
     moves.push(deepCopyState(currentState));
 
     moveIndex = moves.length - 1;
+
+    // const moveButton = `<button>Move ${moveIndex}</button>`;
+    // movesContainer.appendChild(moveButton);
+    addButtonMovescontainer(moves.length);
+
     updateBoard();
 
     if (checkWinner(currentState, turn)) {
-      alert(turn + " wins!");
       disableSquareButtons(); // Disable buttons when a player wins
       showControlButtons(); // Show the "Previous," "Next," and "Reset" buttons
-
+      textStatus.innerHTML = `Player ${turn} wins!`;
       updateButtonStates();
+      movesContainer.style.visibility = "visible";
       return; // Stop further processing
     }
 
     turn = turn === "X" ? "O" : "X";
 
+    textStatus.innerHTML = `Player ${turn}'s turn`;
+
     if (isDraw()) {
-      alert("It's a draw!");
+      textStatus.innerHTML = "It's a draw!";
+      movesContainer.style.visibility = "visible";
       disableSquareButtons();
       showControlButtons();
       updateButtonStates();
     }
+  }
+
+  if (event.target.matches(".move-button")) {
+    let index = event.target.getAttribute("data-index");
+
+    moveIndex = index - 1;
+
+    currentState = deepCopyState(moves[index - 1]);
+    updateBoard();
+    updateButtonStates();
+    disableSquareButtons();
   }
 });
 
