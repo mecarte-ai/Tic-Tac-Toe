@@ -11,16 +11,38 @@ let moveIndex = 0;
 let textStatus = document.querySelector(".status");
 let movesContainer = document.querySelector(".moves-container");
 
+function promptSymbol() {
+  const input = prompt("Please enter 'X' or 'O':");
+
+  if (input === null) {
+    return promptSymbol();
+  }
+
+  const symbol = input.trim().toUpperCase();
+  if (symbol === "X" || symbol === "O") {
+    return symbol;
+  } else {
+    alert("Invalid input. Please enter 'X' or 'O'.");
+    return promptSymbol();
+  }
+}
+
 let resetBoard = function () {
-  currentState = initialState();
-  moves = [];
-  moveIndex = 0;
-  turn = "X";
-  textStatus.innerHTML = `Player ${turn}'s turn`;
-  movesContainer.innerHTML = "";
-  movesContainer.style.visibility = "hidden";
-  hideControlButtons();
-  updateBoard();
+  const selectedSymbol = promptSymbol();
+  if (selectedSymbol !== null) {
+    console.log("Selected Symbol:", selectedSymbol);
+    currentState = initialState();
+    moves = [];
+    moveIndex = 0;
+    turn = selectedSymbol;
+    textStatus.innerHTML = `Player ${turn}'s turn`;
+    movesContainer.innerHTML = "";
+    movesContainer.style.visibility = "hidden";
+    hideControlButtons();
+    updateBoard();
+  } else {
+    console.log("Prompt canceled.");
+  }
 };
 
 document
