@@ -1,3 +1,9 @@
+* {
+  font-family: 'Courier New', Courier, monospace;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+
 .game-board {
   /* border: solid 1px black; */
   width: fit-content;
@@ -11,4 +17,29 @@
 
 .row{
   display: flex;
+}
+
+.button-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.moves-container button{
+  padding: 5px;
+  font-size: 1rem;
+}
+
+.status {
+  font-size: 1.25rem;
+  font-weight: bolder;
+}
+
+.button-container button {
+  font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    flex-direction: column;
+  }
 }

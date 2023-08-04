@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles.css" />
     <link rel="stylesheet" href="aga-branch/styles.css" />
-    <title>Document</title>
+    <title>Tic Tac Toe</title>
   </head>
   <body>
     <div class="container">
@@ -14,9 +14,15 @@
         <div class="game-board"></div>
 
         <div class="button-container" style="visibility: none">
-          <button id="previous-button">🡄</button>
-          <button id="next-button">🡆</button>
-          <button id="reset-button">⭯</button>
+          <button id="previous-button">
+            <i class="fa-solid fa-arrow-left"></i>
+          </button>
+          <button id="next-button">
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+          <button id="reset-button">
+            <i class="fa-solid fa-arrow-rotate-right"></i>
+          </button>
         </div>
       </div>
 
@@ -24,5 +30,9 @@
     </div>
 
     <script src="script.js"></script>
+    <script
+      src="https://kit.fontawesome.com/6e168607c8.js"
+      crossorigin="anonymous"
+    ></script>
   </body>
 </html>
