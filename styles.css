@@ -6,6 +6,7 @@
 
 input[type=button] {
   -webkit-appearance: none;
+  color: black;
 }
 
 .game-board {
