@@ -4,6 +4,10 @@
   font-weight: bolder;
 }
 
+input[type=button] {
+  -webkit-appearance: none;
+}
+
 .game-board {
   /* border: solid 1px black; */
   width: fit-content;
