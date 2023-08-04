@@ -40,7 +40,7 @@ let resetBoard = function () {
     turn = selectedSymbol;
     textStatus.innerHTML = `Player ${turn}'s turn`;
     movesContainer.innerHTML = "";
-    movesContainer.style.visibility = "hidden";
+    movesContainer.style.display = "none";
     container.style.visibility = "visible";
     hideControlButtons();
     updateBoard();
@@ -118,7 +118,7 @@ document.addEventListener("click", function (event) {
       showControlButtons(); // Show the "Previous," "Next," and "Reset" buttons
       textStatus.innerHTML = `Player ${turn} wins!`;
       updateButtonStates();
-      movesContainer.style.visibility = "visible";
+      movesContainer.style.display = "flex";
       return; // Stop further processing
     }
 
@@ -128,7 +128,7 @@ document.addEventListener("click", function (event) {
 
     if (isDraw()) {
       textStatus.innerHTML = "It's a draw!";
-      movesContainer.style.visibility = "visible";
+      movesContainer.style.display = "flex";
       disableSquareButtons();
       showControlButtons();
       updateButtonStates();
