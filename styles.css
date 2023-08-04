@@ -48,3 +48,7 @@ input[type=button] {
 .button-container button {
   font-size: 1.5rem;
 }
+
+.button-container button:disabled i{
+  color:gray;
+}
