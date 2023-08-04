@@ -10,7 +10,7 @@ input[type=button] {
   color: black;
 }
 
-.moves-container :nth-child(even){
+.moves-container :nth-child(odd){
   background-color: black;
   color: white;
 }
