@@ -2,11 +2,17 @@
   font-family: 'Courier New', Courier, monospace;
   text-transform: uppercase;
   font-weight: bolder;
+  letter-spacing: 0.1em;
 }
 
 input[type=button] {
   -webkit-appearance: none;
   color: black;
+}
+
+.moves-container :nth-child(even){
+  background-color: black;
+  color: white;
 }
 
 .game-board {
