@@ -7,11 +7,13 @@
 }
 
 .container {
-  height: 100dvh;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 
 button {
